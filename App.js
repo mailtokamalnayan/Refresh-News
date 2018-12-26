@@ -92,6 +92,7 @@ export default class App extends Component<Props> {
                 </TouchableOpacity>
               );
             })}
+            <Text style={styles.footer}>News from News API</Text>
         </View>
       </ScrollView>
     );
@@ -102,6 +103,13 @@ const styles = StyleSheet.create({
   container: {
     paddingLeft: 16,
     paddingRight: 16
+  },
+  footer: {
+    ...iOSUIKit.caption2Emphasized,
+    color: iOSColors.midGray,
+    textAlign: 'center',
+    marginBottom: 32,
+    marginTop: 8
   },
   date: {
     ...iOSUIKit.caption2Emphasized,
