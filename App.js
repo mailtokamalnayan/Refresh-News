@@ -7,7 +7,7 @@
  */
 
 import React, {Component} from 'react';
-import {StatusBar, ScrollView, StyleSheet, Text, View, Image, RefreshControl, Linking, TouchableOpacity} from 'react-native';
+import {ActivityIndicator, ScrollView, StyleSheet, Text, View, Image, RefreshControl, Linking, TouchableOpacity} from 'react-native';
 import api from './utilities/api';
 import Moment from 'moment';
 import { iOSUIKit, iOSColors } from 'react-native-typography'
@@ -29,14 +29,16 @@ export default class App extends Component<Props> {
   constructor(props) {
     super(props);
     this.state = {
-      articles: []
+      articles: [],
+      loading: true
     }
   }
 
   componentWillMount(){
     api.getNews().then((res => {
       this.setState({
-        articles: res.articles
+        articles: res.articles,
+        loading: false
       })
     }))
   }
@@ -68,7 +70,11 @@ export default class App extends Component<Props> {
             </Text>
             <Text style={iOSUIKit.largeTitleEmphasized}>News</Text>
           </View>
-          
+          <View>
+            {
+              this.state.loading?<ActivityIndicator size="small" color="#000" /> : false
+            }
+          </View>
           {shuffledPosts.map((post, idx) => {
               return (
                 <TouchableOpacity 
