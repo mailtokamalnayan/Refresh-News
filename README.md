@@ -7,4 +7,4 @@ A React Native app made with [News Api](https://newsapi.org/).
 3. `react-native run-ios`
 
 ## Demo
-<img src="https://i.ibb.co/L0J1TcK/Messages-Image-718748635.png" width="120">
+<img src="https://i.ibb.co/L0J1TcK/Messages-Image-718748635.png" width="360">
