@@ -7,7 +7,7 @@
  */
 
 import React, {Component} from 'react';
-import {ScrollView, StyleSheet, Text, View, Image, RefreshControl, Linking, TouchableOpacity} from 'react-native';
+import {StatusBar, ScrollView, StyleSheet, Text, View, Image, RefreshControl, Linking, TouchableOpacity} from 'react-native';
 import api from './utilities/api';
 import Moment from 'moment';
 import { iOSUIKit, iOSColors } from 'react-native-typography'
