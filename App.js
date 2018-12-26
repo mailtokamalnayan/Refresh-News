@@ -8,8 +8,9 @@
 
 import React, {Component} from 'react';
 import {ScrollView, StyleSheet, Text, View, Image, RefreshControl} from 'react-native';
-
 import api from './utilities/api';
+import Moment from 'moment';
+import { iOSUIKit, iOSColors } from 'react-native-typography'
 
 type Props = {};
 
@@ -48,10 +49,9 @@ export default class App extends Component<Props> {
   }
   
   render() {
+    Moment.locale('en');
     console.log("News:", this.state.articles);
     const shuffledPosts = shuffleArray(this.state.articles);
-    const SinglePost = shuffledPosts.slice(0,1);
-    console.log("Spliced:", SinglePost);
     return (
         <ScrollView 
         refreshControl={
@@ -62,20 +62,29 @@ export default class App extends Component<Props> {
         }
         >
         <View style={styles.container}>
-          {SinglePost.map((post, idx) => {
+          <View style={styles.header}>
+            <Text style={styles.date}>
+              {new Moment().format("dddd, D MMM")}
+            </Text>
+            <Text style={iOSUIKit.largeTitleEmphasized}>News</Text>
+          </View>
+          
+          {shuffledPosts.map((post, idx) => {
               return (
-                <View key={idx}>
+                <View key={idx} style={styles.newsRow}>
                   <Image
-                    style={{width: 375, height: 240, marginBottom: 16}}
-                    source={{uri: post.urlToImage}}
+                    style={{width: 80, height: 80, borderRadius: 4}}
+                    source={{uri: post.urlToImage === null ? 'https://images.unsplash.com/photo-1502772066658-3006ff41449b?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=2656&q=80' : post.urlToImage }}
                     resizeMode="cover"
                   />
-                  <Text style={styles.title}>
-                    {post.title}
-                  </Text>
-                  <Text style={styles.content}>
-                    {post.content}
-                  </Text>
+                  <View style={{flex: 1}}>
+                    <Text style={{marginLeft: 16, color:"#999", marginBottom: 2}}>
+                      {Moment(post.publishedAt).fromNow()}
+                    </Text>
+                    <Text style={styles.title}>
+                      {post.title}
+                    </Text>
+                  </View>
                 </View>
               );
             })}
@@ -87,21 +96,33 @@ export default class App extends Component<Props> {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'flex-start',
+    paddingLeft: 16,
+    paddingRight: 16
+  },
+  date: {
+    ...iOSUIKit.caption2Emphasized,
+    color: iOSColors.blue,
+    textTransform: 'uppercase',
+  },
+  header: {
+    marginTop: 72,
+    borderBottomColor: "#ddd",
+    borderBottomWidth: 1,
+    marginBottom: 24,
+    paddingBottom: 8
   },
   title: {
-    fontSize: 24,
-    fontWeight: '800',
-    marginBottom: 8,
-    paddingLeft: 16,
-    paddingRight: 16
-  },
-  content: {
     fontSize: 16,
-    lineHeight: 24,
-    paddingLeft: 16,
-    paddingRight: 16
+    marginLeft: 16,
+    fontWeight: '500',
+    lineHeight: 22
+  },
+  newsRow: {
+    marginBottom: 16,
+    borderBottomWidth: 1,
+    borderBottomColor: '#ddd',
+    flexDirection: 'row',
+    flex: 1,
+    paddingBottom: 16
   }
 });
