@@ -7,7 +7,7 @@
  */
 
 import React, {Component} from 'react';
-import {ScrollView, StyleSheet, Text, View, Image, RefreshControl} from 'react-native';
+import {ScrollView, StyleSheet, Text, View, Image, RefreshControl, Linking, TouchableOpacity} from 'react-native';
 import api from './utilities/api';
 import Moment from 'moment';
 import { iOSUIKit, iOSColors } from 'react-native-typography'
@@ -71,21 +71,25 @@ export default class App extends Component<Props> {
           
           {shuffledPosts.map((post, idx) => {
               return (
-                <View key={idx} style={styles.newsRow}>
-                  <Image
-                    style={{width: 80, height: 80, borderRadius: 4}}
-                    source={{uri: post.urlToImage === null ? 'https://images.unsplash.com/photo-1502772066658-3006ff41449b?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=2656&q=80' : post.urlToImage }}
-                    resizeMode="cover"
-                  />
-                  <View style={{flex: 1}}>
-                    <Text style={{marginLeft: 16, color:"#999", marginBottom: 2}}>
-                      {Moment(post.publishedAt).fromNow()}
-                    </Text>
-                    <Text style={styles.title}>
-                      {post.title}
-                    </Text>
+                <TouchableOpacity 
+                  key={idx} 
+                  onPress={() => Linking.openURL(post.url)}>
+                <View style={styles.newsRow}>
+                    <Image
+                      style={{width: 80, height: 80, borderRadius: 4}}
+                      source={{uri: post.urlToImage === null ? 'https://images.unsplash.com/photo-1502772066658-3006ff41449b?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=2656&q=80' : post.urlToImage }}
+                      resizeMode="cover"
+                    />
+                    <View style={{flex: 1}}>
+                      <Text style={styles.newsRowDate}>
+                        {Moment(post.publishedAt).fromNow()}
+                      </Text>
+                        <Text style={styles.title}>
+                          {post.title}
+                        </Text>
+                    </View>
                   </View>
-                </View>
+                </TouchableOpacity>
               );
             })}
         </View>
@@ -102,6 +106,13 @@ const styles = StyleSheet.create({
   date: {
     ...iOSUIKit.caption2Emphasized,
     color: iOSColors.blue,
+    textTransform: 'uppercase',
+  },
+  newsRowDate: {
+    marginLeft: 16,
+    marginBottom: 2,
+    ...iOSUIKit.caption2Emphasized,
+    color: iOSColors.midGray,
     textTransform: 'uppercase',
   },
   header: {
